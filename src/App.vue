@@ -2,8 +2,7 @@
   <v-app>
     <v-toolbar app>
       <v-toolbar-title class="headline text-uppercase">
-        <span>MVP</span>
-        <span class="font-weight-light">PHENOTYPE FORM</span>
+        <span>Farm Operations</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -14,21 +13,30 @@
         <span class="mr-2">Github</span>
       </v-btn>
     </v-toolbar>
-
     <v-content>
-      <PhenoForm/>
+      <v-layout>
+         <v-navigation-drawer permanent>
+            <router-link to="/">Doser</router-link><br> 
+            <router-link to="/Germination">Germination</router-link><br>
+            <router-link to="/pheno_form">Phenome Form</router-link>
+         </v-navigation-drawer>
+         <router-view></router-view>
+         <!-- <PhenoForm/> -->
+      </v-layout>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import PhenoForm from "./components/PhenoForm";
+//import PhenoForm from "./components/PhenoForm";
 
 export default {
   name: "App",
+  /*
   components: {
     PhenoForm
   },
+  */
   data() {
     return {
       //

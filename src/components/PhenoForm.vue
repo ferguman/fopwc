@@ -1,6 +1,8 @@
 <template>
+  <!--
   <v-container fluid>
     <v-layout align-start justify-center fill-height>
+  -->
       <v-card class="card">
         <v-form ref="form" v-model="valid" lazy-validation class="form">
           <v-menu
@@ -33,8 +35,10 @@
           </div>
         </v-form>
       </v-card>
+  <!--
     </v-layout>
   </v-container>
+  -->
 </template>
 
 <script>
