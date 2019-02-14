@@ -5,23 +5,14 @@
         <span>Farm Operations</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/ferguman/fopvue"
-        target="_blank"
-      >
+      <v-btn flat href="https://github.com/ferguman/fopvue" target="_blank">
         <span class="mr-2">Github</span>
       </v-btn>
     </v-toolbar>
     <v-content>
       <v-layout>
-         <v-navigation-drawer permanent>
-            <router-link to="/">Doser</router-link><br> 
-            <router-link to="/Germination">Germination</router-link><br>
-            <router-link to="/pheno_form">Phenome Form</router-link>
-         </v-navigation-drawer>
-         <router-view></router-view>
-         <!-- <PhenoForm/> -->
+      <PageNav/> 
+      <router-view></router-view>
       </v-layout>
     </v-content>
   </v-app>
@@ -29,14 +20,12 @@
 
 <script>
 //import PhenoForm from "./components/PhenoForm";
+import PageNav from "./components/PageNav.vue"
 
 export default {
   name: "App",
-  /*
-  components: {
-    PhenoForm
-  },
-  */
+  components: { PageNav },
+  props: {bogus_prop: String, delete_these_props_later: String},
   data() {
     return {
       //
