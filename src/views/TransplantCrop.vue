@@ -12,10 +12,10 @@
     </v-date-picker>
     </v-menu>
 
-    <v-text-field label="Transplant Total"></v-text-field>
-
     <v-select v-model="grow_tray" :items="grow_trays" item-text="tag"
               item-value="id" label="Grow Tray" return-object></v-select>
+
+    <v-text-field label="Transplant Total"></v-text-field>
 
     <v-textarea value="transplant_notes" label="Notes" hint="Transplant Notes"></v-textarea>
 
@@ -47,8 +47,8 @@
         },
         submit () {
             if (this.$refs.form.validate()) {
-                this.snackbar = true
-                console.log({start_date:this.date, tray:this.germ_tray.id, plant:this.plant_type})
+                //this.snackbar = true
+                //console.log({start_date:this.date, tray:this.germ_tray.id, plant:this.plant_type})
             }
         }
     },

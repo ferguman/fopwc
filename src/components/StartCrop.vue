@@ -44,8 +44,8 @@
         },
         submit () {
             if (this.$refs.form.validate()) {
-                this.snackbar = true
-                console.log({start_date:this.date, tray:this.germ_tray.id, plant:this.plant_type})
+                //this.snackbar = true
+                //console.log({start_date:this.date, tray:this.germ_tray.id, plant:this.plant_type})
             }
         }
     },

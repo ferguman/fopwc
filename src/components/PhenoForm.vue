@@ -132,7 +132,7 @@ export default {
 
         // Send each entry to the server to be logged in the database.
         for (let i = 0; i < entries.length; i++) {
-          console.log(entries[i]);
+          //console.log(entries[i]);
         }
       }
     }
