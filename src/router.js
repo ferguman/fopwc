@@ -6,8 +6,9 @@ import StartCrop from './views/StartCrop.vue'
 import ManageCrops from './views/ManageCrops.vue'
 import TransplantCrop from './views/TransplantCrop.vue'
 import HarvestCrop from './views/HarvestCrop.vue'
-import Devices from './views/Devices.vue'
+import Systems from './views/Systems.vue'
 import Login from './views/Login.vue'
+import Visitor from './views/Visitor.vue'
 
 Vue.use(Router)
 
@@ -15,8 +16,8 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', name:'default', component: Login},
-    { path: '/devices', name:'devices', component: Devices},
+    { path: '/', name:'visitor', component: Visitor},
+    { path: '/systems', name:'systems', component: Systems},
     { path: '/login', name:'login', component: Login},
     { path: '/logout', name:'logout', component: Login},
     { path: '/start_crop', name:'start_crop', component: StartCrop, meta: {requiresAuth: true}},
