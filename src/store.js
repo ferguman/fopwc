@@ -3,24 +3,32 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import axios from 'axios'
+axios.defaults.withCredentials = true;
+
 export default new Vuex.Store({
   state: {
-      grow_site: {id: 1, name: "greencubator"},
-      grow_sites: [
-        {id: 1, name: "greencubator"}, 
-        {id: 2, name: "maplewood"},
-        {id: 3, name: "home"}],
+      axios: axios,
+      organization: {},
+      organizations: [{}],
       show_login_button: true,
   },
   mutations: {
-    update_grow_site (state, grow_site) {
-      state.grow_site = grow_site
+    set_login_session_data(state, session_data) {
+      state.organizations =  session_data
+      if (state.organizations.length > 0) {
+        state.organization = state.organizations[0]
+      }
     },
-    show_login_button (state) {
-      state.show_login_button = true
+    set_organization (state, organization) {
+      state.organiation = organization 
     },
-    remove_login_button (state) {
-      state.show_login_button = false 
+    set_login_status (state, logged_in) {
+      if (logged_in) {
+        state.show_login_button = false 
+      } else {
+        state.show_login_button = true
+      }
     }
   },
   actions: {

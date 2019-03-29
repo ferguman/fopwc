@@ -17,9 +17,13 @@
 </template>
 
 <script>
-  export default {
+//- import axios from 'axios'
+//- axios.defaults.withCredentials = true;
+
+export default {
       data () {
           return {
+              load_from_server: true,
               headers: [
                   {text: 'Batch', align:'left', sortable: false, value:'batch_id'},
                   {text: 'Start Date', align:'left', sortable: false, value:'start_date'},
@@ -27,10 +31,22 @@
                   {text: 'Plant', align:'left', sortable: false, value:'plant_type'},
                   {text: 'Actions', sortable: false, value:'actions'}
               ],
-              crops: [
+              crops_cache: [
                   {batch_id: 10010, start_date:"2/1/2019", status:"germination", plant_type:"Basil"},
                   {batch_id: 10013, start_date:"1/2/2019", status:"1st transplant", plant_type:"Basil"}
               ]
+          }
+      },
+      computed: {
+          crops: function () {
+              if (this.load_from_server) {
+                 //fetch the list of crops from the server.
+                 const res = this.$store.state.axios.get(process.env.VUE_APP_API_BASE_URL + '/get_crops') 
+                 console.log(res)
+                 return [{}] 
+              } else {
+                return this.crops_cache
+              }
           }
       },
       methods:  {

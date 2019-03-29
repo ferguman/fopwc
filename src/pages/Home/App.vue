@@ -9,15 +9,17 @@
         <span>Farm Operations</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-select v-model="grow_site" :items="grow_sites" 
-                item-text="name" item-value="id"> </v-select>
-      <v-btn flat v-if="show_logout_button" to="logout">
+      <!--
+      <v-select v-model="organization" :items="organizations" 
+                item-text="name" item-value="guid"> </v-select>
+      -->
+      <v-btn flat v-if="show_logout_button" @click="logout" to="logout">
         <span class="mr-2">Logout</span>
       </v-btn>
       <v-btn flat v-if="show_login_button" to="login">
         <span class="mr-2">Login</span>
       </v-btn>
-      <v-btn flat href="https://github.com/ferguman/fopvue" target="_blank">
+      <v-btn flat href="https://github.com/ferguman/fopwc" target="_blank">
         <span class="mr-2">Github</span>
       </v-btn>
     </v-toolbar>
@@ -33,8 +35,10 @@
 
 <script>
 //import PhenoForm from "./components/PhenoForm";
-import PageNav from "./components/PageNav.vue"
-//import axios from 'axios'
+import PageNav from "../../components/PageNav.vue"
+
+import axios from 'axios'
+axios.defaults.withCredentials = true;
 
 export default {
   name: "App",
@@ -43,48 +47,46 @@ export default {
   data() {
     return {
       drawer: null, 
-      //- show_login_button: true,
-      //- show_logout_button: false
     };
   },
   computed: {
     show_login_button () { return this.$store.state.show_login_button}, 
     show_logout_button () { return !this.$store.state.show_login_button}, 
-    grow_site: {
+    /*
+    organization: {
       get () {
-        return this.$store.state.grow_site
+        return this.$store.state.organization
       },
       set (value) {
-        this.$store.commit('update_grow_site', value)
+        this.$store.commit('set_organization', value)
       }
     },
-    grow_sites () {return this.$store.state.grow_sites}
+    organizations () {return this.$store.state.organizations}
+    */
   },
   methods: {
-    update_grow_site (e) {
-      this.$store.commit('update_grow_site', e.value)
+    /*
+    set_organization (e) {
+      this.$store.commit('set_organization', e.value)
+    },
+    */
+    logout: function () {
+
+      axios.post(process.env.VUE_APP_API_BASE_URL + "/logout")
+      .then(function (response) {
+          if (response.data.logged_in == "unknown") {
+            console.log('error logging out. server could not destroy the session');
+          } else if (response.data.logged_in != false) {
+            console.log('error logging out. unknown server response.'); 
+          }
+        })
+      .catch(function (error) {
+        console.log(error);
+        })
+      }
     },
   Mounted: function () {
-
-      console.log("foobar");
       this.$router.push({name: 'login'})
     }
-  }
-  /* Fetches posts when the component is created.
-  created() {
-    axios.get(`https://fop3.urbanspacefarms.com:5000/api/session`)
-    .then(response => {
-      // JSON responses are automatically parsed.
-      if (this.auth_failure == true) {
-        //route to login form`
-      } else {
-         this.sites = response.data.sites
-      }
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
-  }
-    */
 }
 </script>
