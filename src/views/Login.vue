@@ -46,10 +46,9 @@ methods: {
                                    {username: this.username, password: this.password},
                                    { headers: {'Content-type': 'application/x-www-form-urlencoded'}})
       if (res.data.logged_in) {
-        
         //const res = axios.get(process.env.VUE_APP_API_BASE_URL + '/get_crops') 
         this.dialog = false;
-        this.$store.commit('set_login_status', true);
+        this.$store.dispatch('start_session_timer')
         this.$store.commit('set_login_session_data', res.data.organizations)
         this.$router.push({name: "manage_crops"})
      } else {

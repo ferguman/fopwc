@@ -85,7 +85,8 @@ export default {
         })
       }
     },
-  Mounted: function () {
+  mounted: function () {
+      console.log('Vue mounted')
       this.$router.push({name: 'login'})
     }
 }
