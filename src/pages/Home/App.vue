@@ -16,8 +16,9 @@
       <v-btn flat v-if="show_logout_button" @click="logout" to="logout">
         <span class="mr-2">Logout</span>
       </v-btn>
-      <v-btn flat v-if="show_login_button" to="login">
-        <span class="mr-2">Login</span>
+      <v-btn flat v-if="is_session_alive()" to="logout">
+        <span class="mr-2">Logout</span>
+        <SessionTimer/>
       </v-btn>
       <v-btn flat href="https://github.com/ferguman/fopwc" target="_blank">
         <span class="mr-2">Github</span>
@@ -36,13 +37,14 @@
 <script>
 //import PhenoForm from "./components/PhenoForm";
 import PageNav from "../../components/PageNav.vue"
+import SessionTimer from "../../views/APISessionReminder.vue"
 
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 
 export default {
   name: "App",
-  components: { PageNav },
+  components: { PageNav, SessionTimer },
   props: {bogus_prop: String, delete_these_props_later: String},
   data() {
     return {
@@ -65,11 +67,14 @@ export default {
     */
   },
   methods: {
-    /*
-    set_organization (e) {
-      this.$store.commit('set_organization', e.value)
+    is_session_alive() {
+       if (this.$store.state.api_session.time_of_last_api_call) {
+         return true
+       } else {
+        return false
+       }
     },
-    */
+    //api_session: {time_of_last_api_call
     logout: function () {
 
       axios.post(process.env.VUE_APP_API_BASE_URL + "/logout")

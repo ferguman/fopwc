@@ -2,7 +2,11 @@
     <v-dialog v-model="show_api_session_reminder_form" persistent>
     <v-card>
       <v-card-title>
-        <span class="headline">Renew Your Session</span>
+        <span class="headline">Renew Your Session
+            <v-progress-circular :rotate="-90" :size="50" :width="7" :value="session_percent_to_expiration" color="orange">
+               {{ session_percent_to_expiration }}
+            </v-progress-circular>
+        </span>
       </v-card-title>
       <v-card-text>
         <div>Your session is about to expire.  Click on the Continue Session button to continue with your session.</div>
@@ -17,18 +21,20 @@
 
 <script>
 export default {
-  data: () => ({
-      show_api_session_reminder_form: true,
-  }),
+  computed: {
+    show_api_session_reminder_form () {return this.$store.state.api_session.reminder_popup_on},
+    session_percent_to_expiration () {return this.$store.state.api_session.percent_to_expiration}
+  },
   methods: {
     continue_session: function () {
       console.log("TODO: Implement the continue_session function");
-      this.show_api_session_reminder_form = false
+      this.$store.commit('display_session_reminder_popup', false)
+      this.$store.commit('set_percent_to_expiration', 0)
     },  
     logout: function () {
       console.log('TODO: Implement the logout function')
-      this.show_api_session_reminder_form = false
       this.$store.commit('logout')
+      this.$store.commit('display_session_reminder_popup', false)
     },
   }
 }
