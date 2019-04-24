@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import api from "../fop_api.js"
+
 export default {
   computed: {
     show_api_session_reminder_form () {return this.$store.state.api_session.reminder_popup_on},
@@ -27,14 +29,12 @@ export default {
   },
   methods: {
     continue_session: function () {
-      console.log("TODO: Implement the continue_session function");
-      this.$store.commit('display_session_reminder_popup', false)
-      this.$store.commit('set_percent_to_expiration', 0)
+      //- console.log("TODO: Implement the continue_session function");
+      api.extend_session()
+      this.$store.dispatch('start_session_timer')
     },  
     logout: function () {
-      console.log('TODO: Implement the logout function')
       this.$store.commit('logout')
-      this.$store.commit('display_session_reminder_popup', false)
     },
   }
 }

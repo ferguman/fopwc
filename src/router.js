@@ -19,11 +19,11 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     { path: '/', name:'visitor', component: Visitor},
-    //{ path: '/api_session_reminder', name:'api_session_reminder', component: APISessionReminder},
+    //- { path: '/api_session_reminder', name:'api_session_reminder', component: APISessionReminder},
     { path: '/systems', name:'systems', component: Systems},
     { path: '/config', name:'config', component: Config},
     { path: '/login', name:'login', component: Login},
-    { path: '/logout', name:'logout', component: Login},
+    //- { path: '/logout', name:'logout', component: Login},
     { path: '/start_crop', name:'start_crop', component: StartCrop, meta: {requiresAuth: true}},
     { path: '/manage_crops', name:'manage_crops', component: ManageCrops, meta: {requiresAuth: true}},
     { path: '/transplant_crop', name:'transplant_crop', component: TransplantCrop, meta: {requiresAuth: true}},

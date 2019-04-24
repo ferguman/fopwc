@@ -2,15 +2,30 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+import api from "./fop_api.js"
 import axios from 'axios'
 import router from './router.js'
 axios.defaults.withCredentials = true;
-//import Router from './router';
 
-let SESSION_UPDATE_INTERVAL = 5 * 1000;      // 10 seconds
-let SESSION_WARNING_INTERVAL = 10 * 1000;    // 10 seconds
-let SESSION_REMINDER_PERIOD = 20 * 1000       // 20 seconds
+const SESSION_UPDATE_INTERVAL = 5 * 1000;         // 5 seconds - check for session expiration every 5 seconds.
+const SESSION_WARNING_INTERVAL = 60 * 15 * 1000;  // 15 minutes - If the user hasn't hit the API in the last 15 minutes then
+                                                  //              then display the session timeout popup. 
+const SESSION_REMINDER_PERIOD = 60 * 3 * 1000     // 3 minutes - If the user doesn't respond to the session timeout within 3 
+                                                  //             minutes then close the session. 
+
+function clear_session_and_logout(state) {
+  console.log('clear session and logout')
+  state.api_session.time_of_last_api_call = null
+  if (state.api_session.session_timer) {
+    console.log('destroying existing stored api session timer')
+    clearInterval(state.api_session.session_timer)
+  }
+  state.api_session.session_timer = null
+  state.reminder_popup_on = false
+  api.logout()
+  router.push({name: 'login'})
+  //TODO: Need to call a method to destroy all the session data so snoopers can get at it
+} 
 
 export default new Vuex.Store({
   state: {
@@ -22,6 +37,8 @@ export default new Vuex.Store({
   },
   mutations: {
     logout (state) {
+      clear_session_and_logout(state)
+      /*
       //TODO: Need to send logout command to API - bring in logout function from App.vue and centralize it here.
       console.log('logout mutation called')
       state.api_session.time_of_last_api_call = null
@@ -31,7 +48,10 @@ export default new Vuex.Store({
       }
       state.api_session.session_timer = null
       state.reminder_popup_on = false
+      api.logout()
+      router.push({name: 'login'})
       //TODO: Need to call a method to destroy all the session data so snoopers can get at it
+      */
     }, 
     set_api_session_timer (state, timer) {
       state.api_session.time_of_last_api_call = new Date
@@ -41,6 +61,7 @@ export default new Vuex.Store({
         state.api_session.session_timer = null
       }
       console.log('setting stored api session timer to new timer')
+      state.api_session.percent_to_expiration = 0 
       state.api_session.session_timer = timer
       state.api_session.reminder_popup_on = false
     },
@@ -61,9 +82,6 @@ export default new Vuex.Store({
         state.show_login_button = true
       }
     },
-    set_percent_to_expiration(state, value) {
-      state.api_session.percent_to_expiration = value
-    },
     display_session_reminder_popup(state, value) {
       state.api_session.reminder_popup_on = value
     },
@@ -74,12 +92,16 @@ export default new Vuex.Store({
       if (state.api_session.reminder_popup_on) { 
         state.api_session.percent_to_expiration = Math.round(100 * ((now_ts - SESSION_WARNING_INTERVAL - last_api_call_ts)/SESSION_REMINDER_PERIOD))
         if (state.api_session.percent_to_expiration >= 100) {
+          clear_session_and_logout(state)
+          /*- 
           state.api_session.time_of_last_api_call = null
           clearInterval(state.api_session.session_timer)
           state.api_session.reminder_popup_on = false
           state.api_session.percent_to_expiration = 0
           //TODO Implmeet a logout api call and call it here.
+
           router.push({name: 'login'})
+          */
         }
       } else {
         if ((new Date()).getTime() - state.api_session.time_of_last_api_call.getTime() >= SESSION_WARNING_INTERVAL) {

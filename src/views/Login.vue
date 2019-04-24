@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show_login_form" persistent>
+    <v-dialog v-model="show_login_form">
     <v-card>
       <v-card-title>
         <span class="headline">Login</span>
@@ -13,17 +13,12 @@
         <v-btn colar="blue darken-1" flat @click="login">Login</v-btn>
         <v-btn colar="blue darken-1" flat @click="forgot_credentials">reset my password</v-btn>
         <v-btn color="blue darken-1" flat @click="goto_visitor_site">Visitor</v-btn>
-        <!-- <v-btn color="blue darken-1" flat @click="dialog = false">Cancel</v-btn> -->
       </v-card-actions>
     </v-card>
     </v-dialog>
 </template>
 
 <script>
-
-//-import axios from 'axios'
-//-axios.defaults.withCredentials = true;
-
 
 export default {
   data: () => ({
@@ -44,7 +39,7 @@ methods: {
       this.message = ''; 
       const res = await this.$store.state.axios.post(process.env.VUE_APP_API_BASE_URL + '/login', 
                                    {username: this.username, password: this.password},
-                                   { headers: {'Content-type': 'application/x-www-form-urlencoded'}})
+                                   {headers: {'Content-type': 'application/x-www-form-urlencoded'}})
       if (res.data.logged_in) {
         //const res = axios.get(process.env.VUE_APP_API_BASE_URL + '/get_crops') 
         this.dialog = false;
