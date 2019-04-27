@@ -11,6 +11,7 @@ import Systems from './views/Systems.vue'
 import Login from './views/Login.vue'
 import Visitor from './views/Visitor.vue'
 import Config from './views/Config.vue'
+import FoodComputerView from './views/FoodComputerView.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,7 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    { path: '/food_computer_view', name:'food_computer_view', component: FoodComputerView},
     { path: '/', name:'visitor', component: Visitor},
     //- { path: '/api_session_reminder', name:'api_session_reminder', component: APISessionReminder},
     { path: '/systems', name:'systems', component: Systems},
