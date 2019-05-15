@@ -9,14 +9,6 @@
         <span>Farm Operations</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <!--
-      <v-select v-model="organization" :items="organizations" 
-                item-text="name" item-value="guid"> </v-select>
-      <v-btn flat v-if="show_logout_button" @click="logout" to="logout">
-        <span class="mr-2">Logout</span>
-      </v-btn>
-      <v-btn flat v-if="is_session_alive()" to="logout">
-      -->
       <v-btn flat v-if="is_session_alive()" @click="logout">
         <span class="mr-2">Logout</span>
         <SessionReminder/>

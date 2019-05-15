@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     continue_session: function () {
-      //- console.log("TODO: Implement the continue_session function");
       api.extend_session()
       this.$store.dispatch('start_session_timer')
     },  

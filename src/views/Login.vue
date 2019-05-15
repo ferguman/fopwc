@@ -11,8 +11,8 @@
         <div>{{message}}</div>
       </v-card-text>
       <v-card-actions>
-        <v-btn colar="blue darken-1" flat @click="login">Login</v-btn>
-        <v-btn colar="blue darken-1" flat @click="forgot_credentials">reset my password</v-btn>
+        <v-btn color="blue darken-1" flat @click="login">Login</v-btn>
+        <v-btn color="blue darken-1" flat @click="forgot_credentials">reset my password</v-btn>
         <v-btn color="blue darken-1" flat @click="goto_visitor_site">Visitor</v-btn>
       </v-card-actions>
     </v-card>
@@ -31,7 +31,7 @@ export default {
       message: "",
       name_rules: [
         v => !!v || 'name is required',
-        v => v.length >= 6 || 'name must be at least 6 characters long'
+        v => v.length >= 4 || 'name must be at least 4 characters long'
       ]
   }),
 methods: {

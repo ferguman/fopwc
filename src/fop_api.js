@@ -1,22 +1,28 @@
 
 import axios from 'axios'
 import { resolve, reject } from 'bluebird';
+import store from './store.js'
 
 export default {
+    get_chart_list: function(system_guid) {
+          store.dispatch('start_session_timer')
+          return axios.get(process.env.VUE_APP_API_BASE_URL + "/get_chart_list/" + system_guid)
+            .then(response => {
+                if (response.data.r == true) {
+                  console.log('get_chart_list api call successful')
+                  return resolve(response.data.chart_list)
+                } else {
+                  console.log('get_chart_list api called failed')
+                  return reject(new Error('get_chart_list api call rejected by server.'))
+                }
+              })
+    },
     get_devices: function () {
-
       return axios.get(process.env.VUE_APP_API_BASE_URL + "/get_devices")
       .then(response => {
           if (response.data.r == true) {
             console.log('get_devices api call successful')
               return resolve(response.data.devices)
-              /*
-              return resolve([
-                {name: 'fc1', type:"fc1"},
-                {name: 'SLSC MVP', type:"mvp"},
-                {name: 'fc3', type:"fc2"},
-                {name: 'light drive', type:"fopd"}])
-              */
           } else {
             console.log('get_devices api called failed')
             return reject(new Error('get_devices api call rejected by server.'))
@@ -26,7 +32,19 @@ export default {
         console.log('error: get_devices api call failed.')
         return reject(error)
         })
-        
+    },
+    get_zip_file: function () {
+      axios.get(process.env.VUE_APP_API_BASE_URL + "/image/get_zip")
+      .then(function (response) {
+          if (response.data.r == true && response.data.logged_in == true) {
+            console.log('zip file sucess');
+          } else {
+            console.log('error: web server was not able to generate the zip file')
+          }
+        })
+      .catch(function (error) {
+        console.log(error);
+        })
     },
     logout: function () {
       axios.post(process.env.VUE_APP_API_BASE_URL + "/logout")

@@ -93,15 +93,6 @@ export default new Vuex.Store({
         state.api_session.percent_to_expiration = Math.round(100 * ((now_ts - SESSION_WARNING_INTERVAL - last_api_call_ts)/SESSION_REMINDER_PERIOD))
         if (state.api_session.percent_to_expiration >= 100) {
           clear_session_and_logout(state)
-          /*- 
-          state.api_session.time_of_last_api_call = null
-          clearInterval(state.api_session.session_timer)
-          state.api_session.reminder_popup_on = false
-          state.api_session.percent_to_expiration = 0
-          //TODO Implmeet a logout api call and call it here.
-
-          router.push({name: 'login'})
-          */
         }
       } else {
         if ((new Date()).getTime() - state.api_session.time_of_last_api_call.getTime() >= SESSION_WARNING_INTERVAL) {

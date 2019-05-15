@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-/* import Home from './views/Home.vue' */
-//import Doser from './views/Doser.vue'
-//- import APISessionReminder from './views/APISessionReminder.vue'
-import StartCrop from './views/StartCrop.vue'
-import ManageCrops from './views/ManageCrops.vue'
-import TransplantCrop from './views/TransplantCrop.vue'
-import HarvestCrop from './views/HarvestCrop.vue'
-import Systems from './views/Systems.vue'
-import Login from './views/Login.vue'
-import Visitor from './views/Visitor.vue'
+
+// import all the views here
 import Config from './views/Config.vue'
 import FoodComputerView from './views/FoodComputerView.vue'
+import HarvestCrop from './views/HarvestCrop.vue'
+import Login from './views/Login.vue'
+import ManageCrops from './views/ManageCrops.vue'
+import NewSystem from './views/NewSystem.vue'
+import Racks from './views/Racks.vue'
+import StartCrop from './views/StartCrop.vue'
+import Systems from './views/Systems.vue'
+import TransplantCrop from './views/TransplantCrop.vue'
+import Visitor from './views/Visitor.vue'
 
 Vue.use(Router)
 
@@ -21,11 +22,13 @@ export default new Router({
   routes: [
     { path: '/food_computer_view', name:'food_computer_view', component: FoodComputerView},
     { path: '/', name:'visitor', component: Visitor},
+    { path: '/new_system', name:'new_system', component: NewSystem},
     //- { path: '/api_session_reminder', name:'api_session_reminder', component: APISessionReminder},
     { path: '/systems', name:'systems', component: Systems},
     { path: '/config', name:'config', component: Config},
     { path: '/login', name:'login', component: Login},
     //- { path: '/logout', name:'logout', component: Login},
+    { path: '/racks', name:'racks', component: Racks, meta: {requiresAuth: true}},
     { path: '/start_crop', name:'start_crop', component: StartCrop, meta: {requiresAuth: true}},
     { path: '/manage_crops', name:'manage_crops', component: ManageCrops, meta: {requiresAuth: true}},
     { path: '/transplant_crop', name:'transplant_crop', component: TransplantCrop, meta: {requiresAuth: true}},

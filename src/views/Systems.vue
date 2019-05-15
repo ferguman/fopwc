@@ -1,9 +1,10 @@
 <template>
 <div>
-  <v-btn to="new_device" color="primary" dark class="mb-2">New Device</v-btn>
+  <v-btn to="new_system" color="primary" dark class="mb-2">New System</v-btn>
   <v-data-table :headers="headers" :items="devices" class="elevation-1">
     <template slot="items" slot-scope="ss">
         <td>{{ss.item.name}}</td>
+        <td>{{ss.item.type}}</td>
         <td>{{ss.item.type}}</td>
         <td class="justify-center layout px-0">
             <v-btn @click="config" flat small>config</v-btn>
@@ -23,6 +24,7 @@ export default {
       headers: [
         {text: 'Name', align:'left', sortable: false, value:'name'},
         {text: 'Type', align:'left', sortable: false, value:'type'},
+        {text: 'Access Type', align:'left', sortable: false, value:'type'},
         {text: 'Commands', align:'left', sortable: false, value:'type'}],
       devices: [{}]
     }
