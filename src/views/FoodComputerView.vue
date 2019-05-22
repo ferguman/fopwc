@@ -22,7 +22,6 @@
             <v-date-picker v-model="image_download_settings.start_date"></v-date-picker>
             <v-date-picker v-model="image_download_settings.end_date"></v-date-picker>
             <br>
-            <!-- v-btn :download="image_download_settings.filename" v-bind:href="image_download_href" --> 
             <v-btn @click="download_zip" color="blue darken-1" flat >Download Zip File</v-btn>
           </v-form>
         </v-tab-item>
@@ -67,18 +66,26 @@ computed: {
     } 
     return active_charts
   },
+  /*
   image_download_href: function() {
     // put a unique URL parameter onto the url to avoid browser caching.
-     return this.image_download_settings.zip_url + '?ts=' + new Date().getTime() 
+     return this.image_download_settings.zip_url + '/' + this.grow_system_guid + '/' + this.image_download_settings.images_per_day +
+      '/' + this.image_download_settings.start_date + '/' + this.image_download_settings.end_date + '?ts=' + new Date().getTime() 
   }
+  */
 },
 methods: {
   download_zip: function () {
     if (this.$refs.form.validate()) {
-      var parms = this.image_download_settings.images_per_day + '/' + 
+      var parms = this.grow_system_guid + '/' +
+                  this.image_download_settings.images_per_day + '/' + 
                   this.image_download_settings.start_date + '/' +
                   this.image_download_settings.end_date
       console.log('start date: ' + this.image_download_settings.start_date)
+      /*
+      var url = this.image_download_settings.zip_url + '/' + this.grow_system_guid + '/' + this.image_download_settings.images_per_day +
+                  '/' + this.image_download_settings.start_date + '/' + this.image_download_settings.end_date + '?ts=' + new Date().getTime() 
+      */
       var url = this.image_download_settings.zip_url + '/' + parms + '?ts=' + new Date().getTime()
       console.log('url: ' + url)
       window.open(url, "_blank") 
@@ -90,7 +97,6 @@ methods: {
     for (var i=0; i<this.chart_list.length; i++) {
        if (this.chart_list[i].url_with_ts) {
           this.chart_list[i].url_with_ts = this.chart_list[i].url + "?ts=" + new Date().getTime()
-          // for debug -> console.log("new url with ts: " + this.chart_list[i].url_with_ts)
        }
     }
   },
