@@ -1,8 +1,6 @@
 <template>
+  <v-container>
   <v-app>
-        <v-navigation-drawer app  v-model="drawer">
-          <PageNav/>
-        </v-navigation-drawer>
     <v-toolbar app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="headline text-uppercase">
@@ -17,18 +15,21 @@
         <span class="mr-2">Github</span>
       </v-btn>
     </v-toolbar>
+    <v-navigation-drawer app  v-model="drawer">
+      <PageNav/>
+    </v-navigation-drawer>
     <v-content>
-      <v-container fluid fill-height>
-      <v-layout justify-center align-center>
+      <!-- <v-container fluid fill-height> -->
+      <!-- <v-layout justify-center align-center> -->
       <router-view></router-view>
-      </v-layout>
-      </v-container>
+      <!-- </v-layout> -->
+      <!-- </v-container> -->
     </v-content>
   </v-app>
+  </v-container>
 </template>
 
 <script>
-//import PhenoForm from "./components/PhenoForm";
 import PageNav from "../../components/PageNav.vue"
 import SessionReminder from "../../views/APISessionReminder.vue"
 import axios from 'axios'
@@ -60,7 +61,6 @@ export default {
     },
   },
   mounted: function () {
-      console.log('Vue mounted')
       this.$router.push({name: 'login'})
     }
 }

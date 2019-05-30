@@ -1,4 +1,5 @@
 <template>
+  <div>
     <v-tabs v-model="active" color="primary" dark slider-color="secondary">
         <v-tab  :key="1" ripple>charts</v-tab>
         <v-tab  :key="2" ripple>images</v-tab>
@@ -7,14 +8,17 @@
           <p>Chart data is typically updated evey 20 mintues. Click
               <v-btn @click="refresh_charts" color="primary" dark class="mb-2">refresh</v-btn> to get the newest charts.
           </p>
-            <img v-for="o of active_charts" :key="o.key" v-bind:src="o.url_with_ts" width="800"/>
-            <!-- sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, 800px"/> -->
+            <v-img v-for="o of active_charts" :key="o.key" v-bind:src="o.url_with_ts" 
+                   sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, 800px">
+            </v-img>
         </v-tab-item>
         <v-tab-item :key="2">
            <p>Images are typically updated every hour. Click
               <v-btn @click="refresh_image" color="primary" dark class="mb-2">refresh</v-btn> to get the newest image.
            </p>
-           <img v-bind:src="image_url" alt="Latest image" style="width:720px;"/>
+           <!-- <v-img v-bind:src="image_url" alt="Latest image" style="width:720px;"/> -->
+           <v-img v-bind:src="image_url_with_ts" alt="Latest image" 
+                  sizes="(max-width: 320px) 280px, (max-width: 480px) 440px, 800px"/>
         </v-tab-item>
         <v-tab-item :key="3">
           <v-form ref="form" v-model="valid">
@@ -26,6 +30,7 @@
           </v-form>
         </v-tab-item>
     </v-tabs>
+  </div>
 </template>
 
 <script>
@@ -36,8 +41,8 @@ data () {
     return {
       grow_system_guid: null,
       active: null,
+      image_url_with_ts: null,
       image_url: null,
-      image_base_url: null,
       image_download_settings: {images_per_day: 4, start_date: null, end_date: null, 
                                 zip_base_url:process.env.VUE_APP_API_BASE_URL + '/get_zip',
                                 zip_url:process.env.VUE_APP_API_BASE_URL + '/get_zip',
@@ -101,18 +106,18 @@ methods: {
     }
   },
   refresh_image: function() {
-    console.log('refresh image invoked')
-    this.image_url = this.image_base_url + '?ts=' + new Date().getTime()
-
+    this.image_url_with_ts = this.image_url + '?ts=' + new Date().getTime()
+    console.log('####refresh image invoked, new image url: ' + this.image_url_with_ts)
   },
   get_chart_info: function() {
       console.log('getting charts')
   }
 },
-mounted: function () {
+beforeMount: function () {
       this.grow_system_guid = this.$route.params.grow_system_guid
-      this.image_base_url = process.env.VUE_APP_API_BASE_URL + '/image/' + this.grow_system_guid 
-      this.image_url = this.image_base_url + '?ts=' + new Date().getTime()
+      this.image_url = process.env.VUE_APP_API_BASE_URL + '/image/' + this.grow_system_guid 
+      this.image_url_with_ts = this.image_url + '?ts=' + new Date().getTime()
+      console.log('setting image url to ' + this.image_url_with_ts)
       console.log('grow_system_uuid: ' + this.grow_system_guid)
       fop_api.get_chart_list(this.grow_system_guid).then(response => {
           var i
