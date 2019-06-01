@@ -1,9 +1,10 @@
 <template>
   <div>
     <v-tabs v-model="active" color="primary" dark slider-color="secondary">
-        <v-tab  :key="1" ripple>charts</v-tab>
-        <v-tab  :key="2" ripple>images</v-tab>
+        <v-tab :key="1" ripple>charts</v-tab>
+        <v-tab :key="2" ripple>images</v-tab>
         <v-tab :key="3" ripple>download</v-tab>
+        <v-tab :key="4" ripple>harvest</v-tab>
         <v-tab-item :key="1">
           <p>Chart data is typically updated evey 20 mintues. Click
               <v-btn @click="refresh_charts" color="primary" dark class="mb-2">refresh</v-btn> to get the newest charts.
@@ -29,14 +30,19 @@
             <v-btn @click="download_zip" color="blue darken-1" flat >Download Zip File</v-btn>
           </v-form>
         </v-tab-item>
+        <v-tab-item :key="4">
+          <PhenomeForm/>
+        </v-tab-item>
     </v-tabs>
   </div>
 </template>
 
 <script>
+import PhenomeForm from "../components/PhenoForm.vue"
 import fop_api from "../fop_api.js"
 
 export default {
+components: { PhenomeForm },
 data () {
     return {
       grow_system_guid: null,

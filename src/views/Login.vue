@@ -6,13 +6,13 @@
         <span class="headline">Login</span>
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="username" :rules="name_rules" label="User Name" required/>
+        <v-text-field v-model="username" :rules="name_rules" label="User Name" required autocapitalize="off"/>
         <v-text-field v-model="password" label="Password*" type="password" required v-on:keyup.enter="login"/>
         <div>{{message}}</div>
       </v-card-text>
       <v-card-actions>
         <v-btn color="blue darken-1" flat @click="login">Login</v-btn>
-        <v-btn color="blue darken-1" flat @click="forgot_credentials">reset my password</v-btn>
+        <v-btn color="blue darken-1" flat @click="reset_password">reset my password</v-btn>
         <v-btn color="blue darken-1" flat @click="goto_visitor_site">Visitor</v-btn>
       </v-card-actions>
     </v-card>
@@ -35,9 +35,10 @@ export default {
       ]
   }),
 methods: {
-    forgot_credentials: function () {
+    reset_password: function () {
         console.log("TODO: Implement the forgot_credentials function");
         this.message = '';
+        this.$router.push({name: 'password_reset'})
     },  
     goto_visitor_site: function () {
         window.location.href = "/visitor.html";
