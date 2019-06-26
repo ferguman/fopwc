@@ -46,8 +46,7 @@ export default {
         .then(response => {
           this.devices = response })
         .catch(() => {
-          this.devices = [{}]
-      })
+          this.devices = [{}]})
     }
   }
   </script>

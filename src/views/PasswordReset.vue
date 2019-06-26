@@ -4,11 +4,11 @@
     <v-card>
       <v-card-title>
         <span class="headline">First: Get a Reset Code</span>
-        Enter your username and then press the Get Reset Code button.  A reset code will be sent via text message.
-        Enter the reset code and your new password and then click the reset button.
+        Enter your User Name and then press the GET RESET CODE button.  A Reset Code will be sent via text message.
+        Enter the Reset Code and your New Password and then click the RESET PASSWORD button.
       </v-card-title>
       <v-card-text>
-        <v-text-field v-model="username" :rules="name_rules" label="User Name" required autocapitalize="off"/>
+        <v-text-field v-model="user_name" :rules="user_name_rules" label="User Name" required autocapitalize="off"/>
       </v-card-text>
       <v-card-actions>
         <v-btn color="blue darken-1" flat @click="get_reset_code">Get Reset Code</v-btn>
@@ -34,15 +34,17 @@
 
 <script>
 
+import fop_api from "../fop_api.js"
+
 export default {
   data: () => ({
     valid: false,
     show_password_reset_form: true,
-    username: '',
+    user_name: '',
     new_password_1: '',
     new_password_2: '',
     reset_code: '',
-    name_rules: [
+    user_name_rules: [
       v => !!v || 'name is required',
       v => v.length >= 4 || 'name must be at least 4 characters long'
     ]
@@ -52,8 +54,14 @@ export default {
         this.$router.push({name: 'login'});
     },
     get_reset_code: function () {
-        console.log('TODO: Implement the get_reset_code method')
-        //TODO: Get a Twilio account
+      if (this.$refs.password_reset_form.validate()) {
+        console.log('TODO: Implement the get_reset_code method 1');
+        fop_api.get_reset_code(this.user_name)
+        .then(response => {
+          this.message = 'a reset code has been sent' + response.data })
+        .catch(() => {
+          this.message = 'an error has occured. '})
+      }
     },
     reset_password: function () {
         console.log('TODO: implement new password method')

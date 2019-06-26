@@ -3,6 +3,25 @@ import axios from 'axios'
 import { resolve, reject } from 'bluebird';
 import store from './store.js'
 
+
+async function fopcw_get(url) {
+  try {
+    const response = await axios.get(process.env.VUE_APP_API_BASE_URL + "/" + url);
+    if (response.data.r == true) {
+      console.log(url + ' api call successful');
+      return resolve(response.data);
+    }
+    else {
+      console.log(url + ' api called failed');
+      return reject(new Error(url + ' api call rejected by server.'));
+    }
+  }
+  catch (error) {
+    console.log('error: ' + url + ' api call failed.');
+    return reject(error);
+  }
+}
+
 export default {
     get_chart_list: function(system_guid) {
           store.dispatch('start_session_timer')
@@ -33,6 +52,10 @@ export default {
         return reject(error)
         })
     },
+    get_reset_code: function(user_name) {
+      // TODO create a libary of sanitizers and sanitize user_name
+      return fopcw_get('get_reset_code/' + user_name)
+    }, 
     get_zip_file: function () {
       axios.get(process.env.VUE_APP_API_BASE_URL + "/image/get_zip")
       .then(function (response) {
