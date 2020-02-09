@@ -3,8 +3,9 @@
     <v-tabs v-model="active" color="primary" dark slider-color="secondary">
         <v-tab :key="1" ripple>charts</v-tab>
         <v-tab :key="2" ripple>images</v-tab>
-        <v-tab :key="3" ripple>download</v-tab>
-        <v-tab :key="4" ripple>harvest</v-tab>
+        <v-tab :key="3" ripple>image download</v-tab>
+        <v-tab :key="4" ripple>data download</v-tab>
+        <v-tab :key="5" ripple>harvest</v-tab>
         <v-tab-item :key="1">
           <p>Chart data is typically updated evey 20 mintues. Click
               <v-btn @click="refresh_charts" color="primary" dark class="mb-2">refresh</v-btn> to get the newest charts.
@@ -31,6 +32,17 @@
           </v-form>
         </v-tab-item>
         <v-tab-item :key="4">
+          <v-form ref="data_download_form" v-model="valid">
+            <p>Select the start and end date.  The system will create a csv file containing data from the start date through the end date.
+            </p>
+            <v-date-picker v-model="data_download_settings.start_date"></v-date-picker>
+            <v-date-picker v-model="data_download_settings.end_date"></v-date-picker>
+            <br>
+            <v-btn @click="download_data_csv" color="blue darken-1" flat >Download CSV File</v-btn>
+            <v-btn @click="download_data_json" color="blue darken-1" flat >Download JSON</v-btn>
+          </v-form>
+        </v-tab-item>
+        <v-tab-item :key="5">
           <PhenomeForm/>
         </v-tab-item>
     </v-tabs>
@@ -49,10 +61,15 @@ data () {
       active: null,
       image_url_with_ts: null,
       image_url: null,
+      data_download_settings: {start_date: null, end_date: null, 
+                                csv_base_url:process.env.VUE_APP_API_BASE_URL + '/get_data_csv',
+                                csv_url:process.env.VUE_APP_API_BASE_URL + '/get_data_csv',
+                                filename:'data.csv',
+                                json_url:process.env.VUE_APP_API_BASE_URL + '/get_data_json'},
       image_download_settings: {images_per_day: 4, start_date: null, end_date: null, 
                                 zip_base_url:process.env.VUE_APP_API_BASE_URL + '/get_zip',
                                 zip_url:process.env.VUE_APP_API_BASE_URL + '/get_zip',
-                                filename:'foobar.zip'},
+                                filename:'image.zip'},
       max_images_per_day_rules: [
         v => Number.isInteger(parseInt(v)) || 'must be a postive integer between 1 and 144',
         v => (parseInt(v) >= 1 && parseInt(v) <= 144) || 'must be a postive integer between 1 and 144'
@@ -77,15 +94,30 @@ computed: {
     } 
     return active_charts
   },
-  /*
-  image_download_href: function() {
-    // put a unique URL parameter onto the url to avoid browser caching.
-     return this.image_download_settings.zip_url + '/' + this.grow_system_guid + '/' + this.image_download_settings.images_per_day +
-      '/' + this.image_download_settings.start_date + '/' + this.image_download_settings.end_date + '?ts=' + new Date().getTime() 
-  }
-  */
 },
 methods: {
+  download_data_json: function () {
+    if (this.$refs.form.validate()) {
+      var parms = this.grow_system_guid + '/' +
+                  this.data_download_settings.start_date + '/' +
+                  this.data_download_settings.end_date
+      console.log('start date: ' + this.data_download_settings.start_date)
+      var url = this.data_download_settings.json_url + '/' + parms + '?ts=' + new Date().getTime()
+      console.log('url: ' + url)
+      window.open(url, "_blank") 
+    }
+  },
+  download_data_csv: function () {
+    if (this.$refs.form.validate()) {
+      var parms = this.grow_system_guid + '/' +
+                  this.data_download_settings.start_date + '/' +
+                  this.data_download_settings.end_date
+      console.log('start date: ' + this.data_download_settings.start_date)
+      var url = this.data_download_settings.csv_url + '/' + parms + '?ts=' + new Date().getTime()
+      console.log('url: ' + url)
+      window.open(url, "_blank") 
+    }
+  },
   download_zip: function () {
     if (this.$refs.form.validate()) {
       var parms = this.grow_system_guid + '/' +
@@ -93,15 +125,10 @@ methods: {
                   this.image_download_settings.start_date + '/' +
                   this.image_download_settings.end_date
       console.log('start date: ' + this.image_download_settings.start_date)
-      /*
-      var url = this.image_download_settings.zip_url + '/' + this.grow_system_guid + '/' + this.image_download_settings.images_per_day +
-                  '/' + this.image_download_settings.start_date + '/' + this.image_download_settings.end_date + '?ts=' + new Date().getTime() 
-      */
       var url = this.image_download_settings.zip_url + '/' + parms + '?ts=' + new Date().getTime()
       console.log('url: ' + url)
       window.open(url, "_blank") 
     }
-    //fop_api.get_zip_file(this.image_download_settings)
   },
   refresh_charts: function() {
     console.log("refresh charts invoked")

@@ -22,6 +22,24 @@ async function fopcw_get(url) {
   }
 }
 
+async function fopcw_post (url, form_data) {
+  try {
+    const response = await axios.post(process.env.VUE_APP_API_BASE_URL + "/" + url, form_data)
+    if (response.data.r == true) {
+      console.log(url + ' api call successful');
+      return resolve(response.data);
+    }
+    else {
+      console.log(url + ' api called failed');
+      return reject(new Error(url + ' api call rejected by server.'));
+    }
+  }
+  catch (error) {
+    console.log('error: ' + url + ' api call failed.');
+    return reject(error);
+  }
+}
+
 export default {
     get_chart_list: function(system_guid) {
           store.dispatch('start_session_timer')
@@ -51,6 +69,9 @@ export default {
         console.log('error: get_devices api call failed.')
         return reject(error)
         })
+    },
+    get_crops: function() {
+      return fopcw_get('get_crops')
     },
     get_reset_code: function(user_name) {
       // TODO create a libary of sanitizers and sanitize user_name
@@ -96,5 +117,8 @@ export default {
       .catch(function (error) {
         console.log(error);
         })
+    },
+    reset_password: function(form_data) {
+      return fopcw_post('reset_password', form_data)
     },
 }

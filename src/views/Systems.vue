@@ -5,8 +5,8 @@
     <template slot="items" slot-scope="ss">
         <td>{{ss.item.name}}</td>
         <td>{{ss.item.type}}</td>
-        <td>{{ss.item.type}}</td>
-        <td class="justify-center layout px-0">
+        <td>{{ss.item.access_type}}</td>
+        <td class="justify-left layout px-0">
             <v-btn @click="config" flat small>config</v-btn>
             <v-btn @click="view(ss.item)" flat small>view</v-btn>
         </td>
